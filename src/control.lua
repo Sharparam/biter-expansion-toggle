@@ -31,5 +31,11 @@ end
 
 _G.commands.add_command("toggle_expansion", {"biter-expansion-toggle.toggle-cmd-help"}, function(command)
   local player = game.get_player(command.player_index)
+  local is_admin = player == nil or player.admin
+  if not is_admin then
+    print(player, {"biter-expansion-toggle.not-admin"})
+    return
+  end
+
   toggle_expansion(player)
 end)
