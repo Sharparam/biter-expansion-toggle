@@ -46,3 +46,31 @@ commands.add_command("toggle_expansion", {"biter-expansion-toggle.toggle-cmd-hel
 
   toggle_expansion(player)
 end)
+
+commands.add_command("enable_expansion", {"biter-expansion-toggle.enable-cmd-help"}, function(command)
+  local player = game.get_player(command.player_index)
+  if not check_admin(player) then
+    return
+  end
+
+  enable_expansion(player)
+end)
+
+commands.add_command("disable_expansion", {"biter-expansion-toggle.disable-cmd-help"}, function(command)
+  local player = game.get_player(command.player_index)
+  if not check_admin(player) then
+    return
+  end
+
+  disable_expansion(player)
+end)
+
+commands.add_command("check_expansion", {"biter-expansion-toggle.check-cmd-help"}, function(command)
+  local player = game.get_player(command.player_index)
+  local enabled = game.map_settings.enemy_expansion.enabled
+  if enabled then
+    print(player, {"biter-expansion-toggle.expansion-enabled"})
+  else
+    print(player, {"biter-expansion-toggle.expansion-disabled"})
+  end
+end)
