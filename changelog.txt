@@ -3,4 +3,5 @@ Version: 0.1.0
 Date: 2023-03-19
   Major Features:
     - Initial release of mod.
-    - Adds the /toggle_expansion command to toggle biter expansion.
+    - Adds the /biter-expansion [enable|disable|toggle] command to check or control biter expansion.
+    - Adds map setting to control whether expansion can be disabled.

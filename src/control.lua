@@ -6,12 +6,23 @@ local function print(player, ...)
   end
 end
 
+local function check_admin(player)
+  local is_admin = player == nil or player.admin
+  if not is_admin then
+    print(player, {"biter-expansion-toggle.not-admin"})
+  end
+
+  return is_admin
+end
+
 local function enable_expansion(player)
+  if not check_admin(player) then return end
   game.map_settings.enemy_expansion.enabled = true
   print(player, {"biter-expansion-toggle.expansion-enabled"})
 end
 
 local function disable_expansion(player)
+  if not check_admin(player) then return end
   if not settings.global["biter-expansion-toggle-allow-disabling"].value then
     print(player, {"biter-expansion-toggle.expansion-disabling-not-allowed"})
     return
@@ -29,48 +40,21 @@ local function toggle_expansion(player)
   end
 end
 
-local function check_admin(player)
-  local is_admin = player == nil or player.admin
-  if not is_admin then
-    print(player, {"biter-expansion-toggle.not-admin"})
-  end
-
-  return is_admin
-end
-
-commands.add_command("toggle_expansion", {"biter-expansion-toggle.toggle-cmd-help"}, function(command)
+commands.add_command("biter-expansion", {"biter-expansion-toggle.cmd-help"}, function(command)
   local player = game.get_player(command.player_index)
-  if not check_admin(player) then
-    return
-  end
-
-  toggle_expansion(player)
-end)
-
-commands.add_command("enable_expansion", {"biter-expansion-toggle.enable-cmd-help"}, function(command)
-  local player = game.get_player(command.player_index)
-  if not check_admin(player) then
-    return
-  end
-
-  enable_expansion(player)
-end)
-
-commands.add_command("disable_expansion", {"biter-expansion-toggle.disable-cmd-help"}, function(command)
-  local player = game.get_player(command.player_index)
-  if not check_admin(player) then
-    return
-  end
-
-  disable_expansion(player)
-end)
-
-commands.add_command("check_expansion", {"biter-expansion-toggle.check-cmd-help"}, function(command)
-  local player = game.get_player(command.player_index)
-  local enabled = game.map_settings.enemy_expansion.enabled
-  if enabled then
-    print(player, {"biter-expansion-toggle.expansion-enabled"})
+  local arg = command.parameter
+  if arg == "toggle" then
+    toggle_expansion(player)
+  elseif arg == "enable" then
+    enable_expansion(player)
+  elseif arg == "disable" then
+    disable_expansion(player)
   else
-    print(player, {"biter-expansion-toggle.expansion-disabled"})
+    local enabled = game.map_settings.enemy_expansion.enabled
+    if enabled then
+      print(player, {"biter-expansion-toggle.expansion-is-enabled"})
+    else
+      print(player, {"biter-expansion-toggle.expansion-is-disabled"})
+    end
   end
 end)
