@@ -12,6 +12,10 @@ local function enable_expansion(player)
 end
 
 local function disable_expansion(player)
+  if not settings.global["biter-expansion-toggle-allow-disabling"].value then
+    print(player, {"biter-expansion-toggle.expansion-disabling-not-allowed"})
+    return
+  end
   game.map_settings.enemy_expansion.enabled = false
   print(player, {"biter-expansion-toggle.expansion-disabled"})
 end
