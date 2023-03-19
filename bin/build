@@ -144,6 +144,6 @@ vprintln "Zip name: $ZIPNAME"
 (pushd "$OUTDIR" > /dev/null && zip -r "$ZIPNAME" "$RELNAME" && popd > /dev/null)
 
 if [[ "$CLEAN" == true ]]; then
-  vprintln "Cleaning $ZIPDIR"
-  rm -rf "$ZIPDIR"
+  vprintln "Cleaning $RELDIR"
+  rm -rf "$RELDIR"
 fi
