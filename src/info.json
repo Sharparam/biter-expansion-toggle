@@ -1,0 +1,10 @@
+{
+  "name": "biter-expansion-toggle",
+  "version": "0.0.1",
+  "title": "Biter Expansion Toggle",
+  "author": "Sharparam",
+  "contact": "sharparam@sharparam.com",
+  "homepage": "https://github.com/Sharparam/biter-expansion-toggle",
+  "description": "Allows toggling biter expansion on or off",
+  "factorio_version": "1.1"
+}
