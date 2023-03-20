@@ -33,8 +33,12 @@ end
 local function set_shortcut_state(player, state)
   if not player then return end
   player.set_shortcut_toggled("biter-expansion-toggle-shortcut", state)
-  if state then return end
   local can_disable = is_disabling_allowed()
+  if can_disable then
+    player.set_shortcut_available("biter-expansion-toggle-shortcut", true)
+  elseif state then
+    player.set_shortcut_available("biter-expansion-toggle-shortcut", false)
+  end
 end
 
 ---@param player LuaPlayer?
@@ -50,6 +54,7 @@ local function disable_expansion(player)
   if not check_admin(player) then return end
   if not settings.global["biter-expansion-toggle-allow-disabling"].value then
     print(player, {"biter-expansion-toggle.expansion-disabling-not-allowed"})
+    set_shortcut_state(player, true)
     return
   end
   game.map_settings.enemy_expansion.enabled = false
@@ -89,11 +94,19 @@ end)
 script.on_event(defines.events.on_player_created, function(event)
   local player = game.get_player(event.player_index)
   if not player then return end
-  player.set_shortcut_toggled("biter-expansion-toggle-shortcut", is_expansion_enabled())
+  set_shortcut_state(player, is_expansion_enabled())
 end)
 
 script.on_event(defines.events.on_lua_shortcut, function(event)
   if event.prototype_name ~= "biter-expansion-toggle-shortcut" then return end
   local player = game.get_player(event.player_index)
   toggle_expansion(player)
+end)
+
+script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
+  if event.setting ~= "biter-expansion-toggle-allow-disabling" then return end
+  local enabled = is_expansion_enabled()
+  for _, player in pairs(game.players) do
+    set_shortcut_state(player, enabled)
+  end
 end)
