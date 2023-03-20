@@ -91,6 +91,13 @@ commands.add_command("biter-expansion", {"biter-expansion-toggle.cmd-help"}, fun
   end
 end)
 
+script.on_init(function()
+  local enabled = is_expansion_enabled()
+  for _, player in pairs(game.players) do
+    set_shortcut_state(player, enabled)
+  end
+end)
+
 script.on_event(defines.events.on_player_created, function(event)
   local player = game.get_player(event.player_index)
   if not player then return end

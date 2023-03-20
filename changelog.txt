@@ -3,6 +3,8 @@ Version: 1.2.0
 Date: YYYY-MM-DD
   Minor Features:
     - Shortcut button will now be disabled when not usable.
+  Bugfixes:
+    - Shortcut button will now initialise properly on existing saves.
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.1
 Date: 2023-03-20
