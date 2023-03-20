@@ -141,7 +141,15 @@ tmpinfo=$(mktemp)
 jq --arg version "$VERSION" '.version = $version' "$RELINFO" > "$tmpinfo" && mv "$tmpinfo" "$RELINFO"
 
 vprintln "Zip name: $ZIPNAME"
-(pushd "$OUTDIR" > /dev/null && zip -r "$ZIPNAME" "$RELNAME" && popd > /dev/null)
+(
+  pushd "$OUTDIR" > /dev/null \
+  && zip \
+    -r \
+    "$ZIPNAME" \
+    "$RELNAME" \
+    --exclude \
+      '*~'
+)
 
 if [[ "$CLEAN" == true ]]; then
   vprintln "Cleaning $RELDIR"
