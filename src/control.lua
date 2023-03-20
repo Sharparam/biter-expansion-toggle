@@ -1,11 +1,16 @@
-local function print(player, ...)
+---@param player LuaPlayer?
+---@param message LocalisedString
+---@param color Color?
+local function print(player, message, color)
   if player then
-    player.print(...)
+    player.print(message, color)
   else
-    game.print(...)
+    game.print(message, color)
   end
 end
 
+---@param player LuaPlayer?
+---@return boolean
 local function check_admin(player)
   local is_admin = player == nil or player.admin
   if not is_admin then
@@ -15,15 +20,26 @@ local function check_admin(player)
   return is_admin
 end
 
+---@return boolean
 local function is_expansion_enabled()
   return game.map_settings.enemy_expansion.enabled
 end
 
+---@return boolean
+local function is_disabling_allowed()
+  return settings.global["biter-expansion-toggle-allow-disabling"].value == true
+end
+
+---@param player LuaPlayer?
+---@param state boolean
 local function set_shortcut_state(player, state)
   if not player then return end
   player.set_shortcut_toggled("biter-expansion-toggle-shortcut", state)
+  if state then return end
+  local can_disable = is_disabling_allowed()
 end
 
+---@param player LuaPlayer?
 local function enable_expansion(player)
   if not check_admin(player) then return end
   game.map_settings.enemy_expansion.enabled = true
@@ -31,6 +47,7 @@ local function enable_expansion(player)
   set_shortcut_state(player, true)
 end
 
+---@param player LuaPlayer?
 local function disable_expansion(player)
   if not check_admin(player) then return end
   if not settings.global["biter-expansion-toggle-allow-disabling"].value then
@@ -42,6 +59,7 @@ local function disable_expansion(player)
   set_shortcut_state(player, false)
 end
 
+---@param player LuaPlayer?
 local function toggle_expansion(player)
   local enabled = is_expansion_enabled()
   if enabled then
