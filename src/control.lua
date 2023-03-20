@@ -1,11 +1,9 @@
 ---@param player LuaPlayer?
----@param message LocalisedString
----@param color Color?
-local function print(player, message, color)
+local function print(player, ...)
   if player then
-    player.print(message, color)
+    player.print(...)
   else
-    game.print(message, color)
+    game.print(...)
   end
 end
 
